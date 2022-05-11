@@ -79,11 +79,15 @@ typedef NS_ENUM(NSUInteger, LogLevel) {
       result(@(NO));
     }
   } else if([@"isOn" isEqualToString:call.method]) {
-    if(self.centralManager.state == CBManagerStatePoweredOn) {
-      result(@(YES));
-    } else {
-      result(@(NO));
-    }
+    NSTimeInterval delayInSeconds = 0.5;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+      if(self.centralManager.state == CBManagerStatePoweredOn) {
+            result(@(YES));
+          } else {
+            result(@(NO));
+          }
+    });
   } else if([@"startScan" isEqualToString:call.method]) {
     // Clear any existing scan results
     [self.scannedPeripherals removeAllObjects];
