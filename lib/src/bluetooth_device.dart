@@ -29,7 +29,7 @@ class BluetoothDevice {
 
     Timer? timer;
     if (timeout != null) {
-      await timer = Timer(timeout, () {
+      timer = Timer(timeout, () {
         disconnect();
         if(!res.isCompleted) {
           res.completeError(TimeoutException('Failed to connect in time.', timeout));
